@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "com.dxmxntxr.unitymodel": "https://github.com/romaster28/unityModel.git#develop"
+  }
+}
