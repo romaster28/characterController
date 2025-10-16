@@ -18,7 +18,7 @@
 ### Via Unity Package Manager (Git URL)
 1. Open **Unity** and go to **Window > Package Manager**.
 2. Click the **"+"** button in the top-left corner and select **"Add package from git URL"**.
-3. Paste the following URL: https://github.com/romaster28/characterController.git
+3. Paste the following URL: https://github.com/romaster28/characterController.git#develop
 
 ---
 
