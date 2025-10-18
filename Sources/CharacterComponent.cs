@@ -8,6 +8,11 @@ public class CharacterComponent : MonoBehaviour
 
     private CharacterModel _model;
     private IReadOnlyTransform _transformModel;
+
+    public void UpdateAngle(float newAngle)
+    {
+        _angle = newAngle;
+    }
     
     private void Awake()
     {
