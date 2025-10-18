@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class SerializableConfig : ICharacterConfig
+public class SerializableCharacterConfig : ICharacterConfig
 {
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _acceleration;
@@ -11,6 +11,7 @@ public class SerializableConfig : ICharacterConfig
     [SerializeField] private float _gravity;
     [SerializeField] private float _groundCheckRadius;
     [SerializeField] private LayerMask _ground;
+    [SerializeField] private float _maxScopeAngle = 45;
 
     public float MoveSpeed => _moveSpeed;
     public float Acceleration => _acceleration;
@@ -19,4 +20,5 @@ public class SerializableConfig : ICharacterConfig
     public float Gravity => _gravity;
     public float GroundCheckRadius => _groundCheckRadius;
     public LayerMask Ground => _ground;
+    public float MaxSlopeAngle => _maxScopeAngle;
 }

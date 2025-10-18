@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class CharacterComponent : MonoBehaviour
 {
-    [SerializeField] private SerializableConfig _config;
+    [SerializeField] private SerializableCharacterConfig _config;
+    [Range(0, 360f)] [SerializeField] private float _angle;
 
     private CharacterModel _model;
-    private TransformModel _transformModel;
+    private IReadOnlyTransform _transformModel;
     
     private void Awake()
     {
@@ -37,12 +38,25 @@ public class CharacterComponent : MonoBehaviour
     private void FixedUpdate()
     {
         _model.TickSimulate();
+        _model.RotateToAngle(_angle);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Physics.CheckSphere(transform.position, _config.GroundCheckRadius, _config.Ground) ? Color.green : Color.red;
         Gizmos.DrawSphere(transform.position, _config.GroundCheckRadius);
+        
+        Gizmos.color = Color.blue;
+
+        Vector3 position = _transformModel?.Position ?? transform.position;
+        Func<Vector3, Vector3> calculateDirection = _transformModel == null ? transform.TransformDirection : _transformModel.TranslateDirection;
+        Vector3 forward = _transformModel?.Forward ?? transform.forward;
+        
+        // Forward
+        Vector3 toPoint = position + forward * 1;
+        Gizmos.DrawLine(position, toPoint);
+        Gizmos.DrawLine(toPoint, toPoint + calculateDirection(new Vector3(-1, 0, -1) * .5f));
+        Gizmos.DrawLine(toPoint, toPoint + calculateDirection(new Vector3(1, 0, -1) * .5f));
     }
 
     private void TransformModelOnPositionUpdated(Vector3 position)

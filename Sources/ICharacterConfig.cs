@@ -9,4 +9,5 @@ public interface ICharacterConfig
     float Gravity { get; }
     float GroundCheckRadius { get; }
     LayerMask Ground { get; }
+    float MaxSlopeAngle { get; }
 }
