@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class MoveHandler
 {
-    private readonly Func<bool> _checkGrounded;
     private readonly Config _config;
+    private readonly TransformModel _transform;
+    private readonly CollisionHandler _collisionHandler;
+    
     private Vector3 _direction;
 
-    public MoveHandler(Func<bool> checkGrounded, Config config)
+    public MoveHandler(CollisionHandler collisionHandler, TransformModel transform, Config config)
     {
-        _checkGrounded = checkGrounded ?? throw new ArgumentNullException(nameof(checkGrounded));
+        _collisionHandler = collisionHandler ?? throw new ArgumentNullException(nameof(collisionHandler));
+        _transform = transform ?? throw new ArgumentNullException(nameof(transform));
         _config = config;
     }
 
@@ -20,13 +23,17 @@ public class MoveHandler
     
     public void Handle(ref Vector3 velocity)
     {
+        Vector3 convertedDirection = _transform.TranslateDirection(_direction);
+        convertedDirection = Vector3.ProjectOnPlane(convertedDirection, _collisionHandler.GetNormal(convertedDirection));
+
+        bool isGrounded = _collisionHandler.CheckGrounded();
         Vector3 targetVelocity = _direction * _config.Speed;
-        float controlFactor = _checkGrounded.Invoke() ? 1f : _config.AirControl;
+        float controlFactor = isGrounded ? 1f : _config.AirControl;
         float timeFactor = _config.Acceleration * controlFactor * Time.deltaTime;
         
         velocity.x = Mathf.Lerp(velocity.x, targetVelocity.x, timeFactor);
         
-        if (_checkGrounded.Invoke())
+        if (isGrounded)
             velocity.y = Mathf.Lerp(velocity.y, targetVelocity.y, timeFactor);
         
         velocity.z = Mathf.Lerp(velocity.z, targetVelocity.z, timeFactor);

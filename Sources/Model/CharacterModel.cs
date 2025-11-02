@@ -15,7 +15,7 @@ public class CharacterModel
     {
         _transform = new TransformModel(startPosition);
         _collisionHandler = new CollisionHandler(config.Ground, config.GroundCheckRadius);
-        _moveHandler = new MoveHandler(_collisionHandler.CheckGrounded, new MoveHandler.Config(config.Acceleration, config.MoveSpeed, config.AirControl));
+        _moveHandler = new MoveHandler(_collisionHandler, _transform, new MoveHandler.Config(config.Acceleration, config.MoveSpeed, config.AirControl));
         _gravityHandler = new GravityHandler(_collisionHandler.CheckGrounded, config.Gravity, config.JumpHeight);
     }
 
@@ -28,8 +28,6 @@ public class CharacterModel
     
     public void MoveByDirection(Vector3 direction)
     {
-        direction = _transform.TranslateDirection(direction);
-        direction = Vector3.ProjectOnPlane(direction, _collisionHandler.GetNormal(direction));
         _moveHandler.UpdateDirection(direction); 
     }
 
