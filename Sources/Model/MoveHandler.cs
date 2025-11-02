@@ -27,7 +27,7 @@ public class MoveHandler
         convertedDirection = Vector3.ProjectOnPlane(convertedDirection, _collisionHandler.GetNormal(convertedDirection));
 
         bool isGrounded = _collisionHandler.CheckGrounded();
-        Vector3 targetVelocity = _direction * _config.Speed;
+        Vector3 targetVelocity = convertedDirection * _config.Speed;
         float controlFactor = isGrounded ? 1f : _config.AirControl;
         float timeFactor = _config.Acceleration * controlFactor * Time.deltaTime;
         
